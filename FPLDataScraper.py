@@ -3,7 +3,6 @@
 # This code extracts the score history from Fantasy Premier League website
 # Using the API and json data
 # and exports it to an Excel Workbook
-# Compiled by Fez
 
 from tkinter import *
 from tkinter import messagebox
