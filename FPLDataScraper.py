@@ -3,7 +3,7 @@
 # This code extracts the score history from Fantasy Premier League website
 # Using the API and json data
 # and exports it to an Excel Workbook
-# Compiled by Fez [u/CinnamonUranium]
+# Compiled by Fez
 
 from tkinter import *
 from tkinter import messagebox
@@ -275,9 +275,9 @@ class fantasypl:
         data1 = Reference(sheet1, min_col=3, max_col=5, min_row=1, max_row=39)
         c1.height = 18
         c1.width = 38
-
         c1.add_data(data1, titles_from_data=True)
         sheet1.add_chart(c1, "O2")
+        
         # Save workbook
         wb.save('FPL.Data.17-18.xlsx')
 
