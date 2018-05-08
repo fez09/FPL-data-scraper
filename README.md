@@ -1,5 +1,5 @@
 # Background
-I am not a programmer. I do this as a way to learn more about programming. Being an amateur the code for this script is very raw and has plenty of things which can definitely be improved. That said, I am satisfied with how this turned out. Will gladly accept advice/pointers from more experienced people to improve this code. Lets get to it. 
+I am not a programmer. I do this as a way to learn more about programming. Being an amateur the code for this script is very raw and has plenty of things which can definitely be improved, and the code is not 'clean'. That said, I am satisfied with how this turned out. Will gladly accept advice/pointers from more experienced people to improve this code. Lets get to it. 
 
 I enjoy the barclays premier league and play the fantasy a lot. One thing I did not like was the fact that you are not able to view detailed history of past seasons. So I started logging everything manually in excel sheets. Decided it would be easier to write a program for it. I chose python since I just started learning it a couple of months ago and the openpyxl module is a way to export data to excel sheets. I'm aware there is a possibility something like this already exists considering the number of 3rd party statistics sites available. But I wanted to make my own script. 
 # The Script
@@ -24,8 +24,8 @@ This script exports fantasy premier league gameweek history and player data to e
 # The Bad 
 There is a lot of data which is missing at the moment. I was not able to retreive the individual player scores for each gameweek and the captain/vice-captain. No support for mini-leagues and the FPL cup right now. Also weekly dream team is not present.  
 # Json links
- - https://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) (Live team points)
- - https://fantasy.premierleague.com/drf/entry/{}/history (GW number)(GW history)
- - https://fantasy.premierleague.com/drf/bootstrap-static (Base site)
- - https://fantasy.premierleague.com/drf/entry/{}/transfers (GW number)(transfer history)
- - https://fantasy.premierleague.com/drf/dream-team (Dream Team)
+ - https://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
+ - https://fantasy.premierleague.com/drf/entry/{}/history (GW number) - GW history
+ - https://fantasy.premierleague.com/drf/bootstrap-static  - Base site
+ - https://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
+ - https://fantasy.premierleague.com/drf/dream-team  - Dream team
