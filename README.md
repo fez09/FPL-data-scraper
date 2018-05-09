@@ -4,6 +4,9 @@ I am not a programmer. I do this as a way to learn more about programming. Being
 I enjoy the barclays premier league and play the fantasy a lot. One thing I did not like was the fact that you are not able to view detailed history of past seasons. So I started logging everything manually in excel sheets. Decided it would be easier to write a program for it. I chose python since I just started learning it a couple of months ago and the openpyxl module is a way to export data to excel sheets. I'm aware there is a possibility something like this already exists considering the number of 3rd party statistics sites available. But I wanted to make my own script. 
 # The Script
 Executing the script prompts a GUI interface asking the user to enter their fantasy team ID. This can be found easily on the wesite. Clicking the submit button then proceeds to import all json data from the website and exporting it to excel. 
+
+Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requests to fetch Json data. 
+
 # List of data imported
  - Gameweek Score
  - Gameweek Average Score
