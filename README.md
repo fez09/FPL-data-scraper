@@ -26,6 +26,8 @@ There is a lot of data which is missing at the moment. I was not able to retreiv
 # Json links
  - https://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
  - https://fantasy.premierleague.com/drf/entry/{}/history (GW number) - GW history
- - https://fantasy.premierleague.com/drf/bootstrap-static  - Base site
+ - https://fantasy.premierleague.com/drf/bootstrap-static  - Contains all player data
  - https://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
  - https://fantasy.premierleague.com/drf/dream-team  - Dream team
+ # Scope
+ For the next season I will try to improve this script by adding more data like individual player scores per gameweek, cup history, mini league history of choice and more. 
