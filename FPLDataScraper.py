@@ -3,6 +3,8 @@
 # This code extracts the score history from Fantasy Premier League website
 # Using the API and json data
 # and exports it to an Excel Workbook
+# https://github.com/fez09/FPL-data-scraper
+# Compiled by Fez [u/CinnamonUranium]
 
 from tkinter import *
 from tkinter import messagebox
@@ -12,6 +14,7 @@ import requests
 from openpyxl.worksheet.table import Table, TableStyleInfo
 from openpyxl.chart import LineChart, Reference
 from openpyxl.styles import PatternFill, Alignment, Font
+from openpyxl.formatting.rule import IconSet, Rule, FormatObject
 
 
 # Create class
@@ -26,17 +29,19 @@ class fantasypl:
         parent.resizable(False, False)
         parent.title("FPL Data Scraper")
 
+        # Creating and placing widgets
+        self.logo = PhotoImage(file='FPL_logo.gif')
+        ttk.Label(self.Frame, image=self.logo).grid()
         ttk.Label(self.Frame, text="Enter your FPL ID").grid(row=1, padx=5, pady=5)
         ttk.Label(self.Frame, text="Please be patient while your data"
-                                   " loads into the excel sheet.").grid(row=2, padx=5, pady=5)
+                                   " is imported").grid(row=5, padx=5, pady=5)
         self.fpl_prompt = ttk.Entry(self.Frame, width=25, font=('Times New Roman', 18))
         self.fpl_prompt.grid(row=3, padx=5, pady=5)
         ttk.Button(self.Frame, text="Submit", command=self.submit).grid(row=4, padx=5, pady=5)
-
         self.style = ttk.Style()
-        self.style.configure('TFrame', background='lightblue')
-        self.style.configure('TButton', background='lightblue', font=('Calibri', 15))
-        self.style.configure('TLabel', background='lightblue', font=('Calibri', 15, 'bold'))
+        self.style.configure('TFrame', background='#00FF7C')
+        self.style.configure('TButton', background='#00FF7C', font=('Calibri', 15))
+        self.style.configure('TLabel', background='#00FF7C', font=('Calibri', 15, 'bold'))
 
     # Actions after clicking submit
     def submit(self):
@@ -56,13 +61,21 @@ class fantasypl:
         sheet1 = wb.create_sheet(index=1, title='2017_2018')
 
         # Create Read me sheet
-        sheet0['B2'].value = 'Hey all. This excel file is the result of a very simple and amateurish python script' \
-                             'writte by me. This uses the FPL API and json data to import your '
+        sheet0['B2'].value = 'Hey all. This excel file is the result of a very simple and amateurish python script'
+        sheet0['B4'].value = 'The script uses the FPL API and json data to import your history from the ' \
+                             'website and then exports it to this file '
+        sheet0['B6'].value = 'If you like my work you can buy me a drink at ten.dimensions10@gmail.com ' \
+                             'or just donate to a charity of your choice'
+        sheet0['B8'].value = 'If you are interested in the python code you can find it at ' \
+                             'https://github.com/fez09/FPL-data-scraper'
+        sheet0['B10'].value = 'be aware that the code is VERY amateurish and a lof of improvements can be made.'
+        sheet0['B12'].value = 'Your data is in the next sheet.'
+
         # Create headers
         header1 = ['GW', 'GP', 'GW AVG', 'PB', 'TM', 'TC', 'GR', 'OP', 'OR', 'Position', 'TV']
         transferheader = ['GW', 'Transfer In', 'Value', 'Transfer Out', 'Value']
-        sheet1.merge_cells('I58:J58')
-        sheet1['I58'] = 'Overall Dream Team'
+        sheet1.merge_cells('E58:F58')
+        sheet1['E58'] = 'Overall Dream Team'
         for tkey in range(5):
             sheet1.cell(row=1, column=tkey + 42).value = transferheader[tkey]
         for key in range(11):
@@ -82,6 +95,12 @@ class fantasypl:
             t_v = each['value']
             p_o_s = each['movement']
             o_p = each['total_points']
+            if p_o_s == 'up':
+                p_o_s = 1
+            elif p_o_s == 'new':
+                p_o_s = 0
+            else:
+                p_o_s = -1
             history_list = [g_w, points, p_b, t_m, t_c, g_w_r, o_p, o_r, p_o_s, t_v / 10]
             for rownum in range(g_w + 1, g_w + 2):
                 sheet1.cell(row=rownum, column=2).value = g_w
@@ -122,7 +141,7 @@ class fantasypl:
                     sheet1.cell(row=rownum, column=colnum).value = values
                     rownum = rownum + 1
         startfill = PatternFill(start_color='ff15dd43', end_color='ff15dd43', fill_type='solid')
-        benchfill = PatternFill(start_color='ff15c0dd', end_color='ff15c0dd', fill_type='solid')
+        benchfill = PatternFill(start_color='ff00FFDA', end_color='ff00FFDA', fill_type='solid')
         for rownum in range(42, 53):
             for colnum in range(2, 40):
                 start = sheet1.cell(row=rownum, column=colnum)
@@ -135,7 +154,7 @@ class fantasypl:
         # Import Gameweek Transfer data
         url4 = 'https://fantasy.premierleague.com/drf/entry/{}/transfers'.format(self.fpl_prompt.get())
         json_transfer = requests.get(url4).json()
-        rownum = 2
+        rownum = 1
         num_of_t = len(json_transfer['history'])
         for each in json_transfer['history']:
             transferin = each['element_in']
@@ -161,7 +180,7 @@ class fantasypl:
             dt_data = [dt_name, dtpoints]
             rownum2 = rownum2 + 1
             for colnum in range(2):
-                sheet1.cell(row=rownum2, column=colnum + 9).value = dt_data[colnum]
+                sheet1.cell(row=rownum2, column=colnum + 5).value = dt_data[colnum]
 
         # Select data for Chip usage and enter in excel as highlights
         wildcardfill = PatternFill(start_color='ffff0000', end_color='ffff0000', fill_type='solid')
@@ -192,6 +211,19 @@ class fantasypl:
                     wc.fill = triplecapfill
                 break
 
+        # Creating Legend
+        legendlist = ['Legend', 'Wildcard', 'Benchboost', 'Triple Captain', 'Free Hit']
+        for lkey in range(5):
+            sheet1.cell(row=lkey + 59, column=2).value = legendlist[lkey]
+            lewc = sheet1.cell(row=59 + 1, column=2)
+            lewc.fill = wildcardfill
+            lebb = sheet1.cell(row=59 + 2, column=2)
+            lebb.fill = bboostfill
+            letc = sheet1.cell(row=59 + 3, column=2)
+            letc.fill = triplecapfill
+            lefh = sheet1.cell(row=59 + 4, column=2)
+            lefh.fill = freehitfill
+
         # Creating excel cell names
         alphabet = []
         for letter in range(65, 91):
@@ -199,7 +231,7 @@ class fantasypl:
         alphabeta = []
         for letter in range(65, 91):
             alphabeta.append('A' + chr(letter))
-        AtoAZ = alphabet + alphabeta
+        # AtoAZ = alphabet + alphabeta
 
         # Cell Styling
         headerfont = Font(bold=True)
@@ -247,16 +279,25 @@ class fantasypl:
             col7 = sheet1.cell(row=key1, column=47)
             col7.number_format = '0.0'
         for key1 in range(58, 70):  # Dream Team Table
-            for key2 in range(9, 11):
+            for key2 in range(5, 7):
                 col8 = sheet1.cell(row=key1, column=key2)
                 col8.alignment = alignment
-        col9 = sheet1.cell(row=58, column=9)  # Dream Team Table header
+        col9 = sheet1.cell(row=58, column=5)  # Dream Team Table header
         col9.font = headerfont
         dreamteamfill = PatternFill(start_color='ffF3FF00', end_color='ffF3FF00', fill_type='solid')
         for key1 in range(58, 70):
-            for key2 in range(9, 11):
+            for key2 in range(5, 7):
                 wc = sheet1.cell(row=key1, column=key2)
                 wc.fill = dreamteamfill
+
+        # Creating Position symbols for GW history
+        first = FormatObject(type='num', val=-1)
+        second = FormatObject(type='num', val=0)
+        third = FormatObject(type='num', val=1)
+        iconset = IconSet(iconSet='3Arrows', cfvo=[first, second, third], showValue=None, percent=None,
+                          reverse=None)
+        rule = Rule(type='iconSet', iconSet=iconset)
+        sheet1.conditional_formatting.add('K2:K39',cfRule=rule)
 
         # Creating Tables
         table1 = Table(displayName='GWH', ref='B1:L39')
@@ -276,7 +317,7 @@ class fantasypl:
         c1.width = 38
         c1.add_data(data1, titles_from_data=True)
         sheet1.add_chart(c1, "O2")
-        
+
         # Save workbook
         wb.save('FPL.Data.17-18.xlsx')
 
@@ -296,4 +337,5 @@ def main():
     root.mainloop()
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
