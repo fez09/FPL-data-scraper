@@ -15,6 +15,8 @@ from openpyxl.worksheet.table import Table, TableStyleInfo
 from openpyxl.chart import LineChart, Reference
 from openpyxl.styles import PatternFill, Alignment, Font
 from openpyxl.formatting.rule import IconSet, Rule, FormatObject
+import base64
+from urllib.request import urlopen
 
 
 # Create class
@@ -29,13 +31,17 @@ class fantasypl:
         parent.resizable(False, False)
         parent.title("FPL Data Scraper")
 
+        image_url = "http://i.imgur.com/QoNiPLP.gif"
+        image_byt = urlopen(image_url).read()
+        image_b64 = base64.encodebytes(image_byt)
+
         # Creating and placing widgets
-        self.logo = PhotoImage(file='FPL_logo.gif')
+        self.logo = PhotoImage(data=image_b64)
         ttk.Label(self.Frame, image=self.logo).grid()
         ttk.Label(self.Frame, text="Enter your FPL ID").grid(row=1, padx=5, pady=5)
         ttk.Label(self.Frame, text="Please be patient while your data"
                                    " is imported").grid(row=5, padx=5, pady=5)
-        self.fpl_prompt = ttk.Entry(self.Frame, width=25, font=('Times New Roman', 18))
+        self.fpl_prompt = ttk.Entry(self.Frame, width=25, font=('Times New Roman', 18), justify=CENTER)
         self.fpl_prompt.grid(row=3, padx=5, pady=5)
         ttk.Button(self.Frame, text="Submit", command=self.submit).grid(row=4, padx=5, pady=5)
         self.style = ttk.Style()
@@ -64,12 +70,13 @@ class fantasypl:
         sheet0['B2'].value = 'Hey all. This excel file is the result of a very simple and amateurish python script'
         sheet0['B4'].value = 'The script uses the FPL API and json data to import your history from the ' \
                              'website and then exports it to this file '
-        sheet0['B6'].value = 'If you like my work you can buy me a drink at ten.dimensions10@gmail.com ' \
+        sheet0['B6'].value = 'If you want to give me more motivation to improve the script, you can' \
+                             ' buy me a drink at ten.dimensions10@gmail.com ' \
                              'or just donate to a charity of your choice'
         sheet0['B8'].value = 'If you are interested in the python code you can find it at ' \
                              'https://github.com/fez09/FPL-data-scraper'
         sheet0['B10'].value = 'be aware that the code is VERY amateurish and a lof of improvements can be made.'
-        sheet0['B12'].value = 'Your data is in the next sheet.'
+        sheet0['B12'].value = 'Your data is in the next sheet. Change sheets below or hold "CTRL+PgDown"'
 
         # Create headers
         header1 = ['GW', 'GP', 'GW AVG', 'PB', 'TM', 'TC', 'GR', 'OP', 'OR', 'Position', 'TV']
@@ -297,7 +304,7 @@ class fantasypl:
         iconset = IconSet(iconSet='3Arrows', cfvo=[first, second, third], showValue=None, percent=None,
                           reverse=None)
         rule = Rule(type='iconSet', iconSet=iconset)
-        sheet1.conditional_formatting.add('K2:K39',cfRule=rule)
+        sheet1.conditional_formatting.add('K2:K39', cfRule=rule)
 
         # Creating Tables
         table1 = Table(displayName='GWH', ref='B1:L39')
