@@ -1,10 +1,9 @@
-# FPL ARCHIVE EXTRACTOR - May 2018
+# FPL DATA EXTRACTOR - May 2018
 # THIS IS FOR THE 2017 - 2018 Season
 # This code extracts the score history from Fantasy Premier League website
 # Using the API and json data
 # and exports it to an Excel Workbook
 # https://github.com/fez09/FPL-data-scraper
-# Compiled by Fez [u/CinnamonUranium]
 
 from tkinter import *
 from tkinter import messagebox
@@ -20,7 +19,7 @@ from urllib.request import urlopen
 
 
 # Create class
-class fantasypl:
+class fantasypl():
 
     # Initialize GUI
     def __init__(self, parent):
@@ -29,7 +28,7 @@ class fantasypl:
         self.Frame.grid()
 
         parent.resizable(False, False)
-        parent.title("FPL Data Scraper")
+        parent.title('FPL 2017/2018 Data Fetcher')
 
         image_url = "http://i.imgur.com/QoNiPLP.gif"
         image_byt = urlopen(image_url).read()
@@ -52,14 +51,15 @@ class fantasypl:
     # Actions after clicking submit
     def submit(self):
 
-        print("Please wait while your data is being fetched. "
-              "This may take some time depending on your computer/internet")
-
         # Import history JSON data
         url1 = 'https://fantasy.premierleague.com/drf/entry/{}/history'.format(self.fpl_prompt.get())
         url2 = 'https://fantasy.premierleague.com/drf/bootstrap-static'
         json_history = requests.get(url1).json()
         json_live = requests.get(url2).json()
+        json_teamname = json_history['entry']['name']
+
+        messagebox.showinfo(title='Importing...',
+                            message='Importing data for "{}". Please be patient.'.format(json_teamname),)
 
         # Create workbook and sheets
         wb = openpyxl.Workbook()
@@ -70,7 +70,7 @@ class fantasypl:
         sheet0['B2'].value = 'Hey all. This excel file is the result of a very simple and amateurish python script'
         sheet0['B4'].value = 'The script uses the FPL API and json data to import your history from the ' \
                              'website and then exports it to this file '
-        sheet0['B6'].value = 'If you want to give me more motivation to improve the script, you can' \
+        sheet0['B6'].value = 'If you want to contact me directly or motivate me to improve the script, you can' \
                              ' buy me a drink at ten.dimensions10@gmail.com ' \
                              'or just donate to a charity of your choice'
         sheet0['B8'].value = 'If you are interested in the python code you can find it at ' \
@@ -83,12 +83,14 @@ class fantasypl:
         transferheader = ['GW', 'Transfer In', 'Value', 'Transfer Out', 'Value']
         sheet1.merge_cells('E58:F58')
         sheet1['E58'] = 'Overall Dream Team'
+        headerrow = 1
+        gwteamheaderow = 41
         for tkey in range(5):
-            sheet1.cell(row=1, column=tkey + 42).value = transferheader[tkey]
+            sheet1.cell(row=headerrow, column=tkey + 42).value = transferheader[tkey]
         for key in range(11):
-            sheet1.cell(row=1, column=key + 2).value = header1[key]
+            sheet1.cell(row=headerrow, column=key + 2).value = header1[key]
         for gw in range(1, 39):
-            sheet1.cell(row=41, column=gw + 1).value = 'GW {}'.format(gw)
+            sheet1.cell(row=gwteamheaderow, column=gw + 1).value = 'GW {}'.format(gw)
 
         # Import gameweek history and insert data in sheet
         for each in json_history['history']:
@@ -132,21 +134,21 @@ class fantasypl:
             d[pl_id] = pl_name
 
         # Select team player data for personal team for each gameweek and enter in sheet
-        colnum = 1
+        gwteamcol = 1
         for each in json_history['history']:
             g_w = each['event']
             url3 = 'https://fantasy.premierleague.com/drf/entry/{}/event/{}/picks'.format(self.fpl_prompt.get(), g_w)
             json_pick = requests.get(url3).json()
-            colnum = colnum + 1
-            rownum = 42
+            gwteamcol = gwteamcol + 1
+            gwteamrow = 42
             # noinspection PyAssignmentToLoopOrWithParameter
             for each in json_pick['picks']:
                 player_id = each['element']
                 pl_name = d[player_id]
                 plist = {player_id: pl_name}
                 for values in plist.values():
-                    sheet1.cell(row=rownum, column=colnum).value = values
-                    rownum = rownum + 1
+                    sheet1.cell(row=gwteamrow, column=gwteamcol).value = values
+                    gwteamrow = gwteamrow + 1
         startfill = PatternFill(start_color='ff15dd43', end_color='ff15dd43', fill_type='solid')
         benchfill = PatternFill(start_color='ff00FFDA', end_color='ff00FFDA', fill_type='solid')
         for rownum in range(42, 53):
@@ -161,7 +163,7 @@ class fantasypl:
         # Import Gameweek Transfer data
         url4 = 'https://fantasy.premierleague.com/drf/entry/{}/transfers'.format(self.fpl_prompt.get())
         json_transfer = requests.get(url4).json()
-        rownum = 1
+        gwtransferrow = 1
         num_of_t = len(json_transfer['history'])
         for each in json_transfer['history']:
             transferin = each['element_in']
@@ -172,22 +174,38 @@ class fantasypl:
             t_in_name = d.get(transferin, 0)
             t_out_name = d.get(transferout, 0)
             trans_data = [transfergw, t_in_name, incost / 10, t_out_name, outcost / 10]
-            rownum = rownum + 1
+            gwtransferrow = gwtransferrow + 1
             for colnum in range(5):
-                sheet1.cell(row=rownum, column=colnum + 42).value = trans_data[colnum]
+                sheet1.cell(row=gwtransferrow, column=colnum + 42).value = trans_data[colnum]
 
         # Import Dream Team Data
         url5 = 'https://fantasy.premierleague.com/drf/dream-team'
         json_dreamteam = requests.get(url5).json()
-        rownum2 = 58
+        dtrow = 58
         for each in json_dreamteam['team']:
             dtpoints = each['points']
             dtplayer = each['element']
             dt_name = d.get(dtplayer, 0)
             dt_data = [dt_name, dtpoints]
-            rownum2 = rownum2 + 1
+            dtrow = dtrow + 1
             for colnum in range(2):
-                sheet1.cell(row=rownum2, column=colnum + 5).value = dt_data[colnum]
+                sheet1.cell(row=dtrow, column=colnum + 5).value = dt_data[colnum]
+
+        # Import Cup History
+        url6 = 'https://fantasy.premierleague.com/drf/entry/{}/cup'.format(self.fpl_prompt.get())
+        json_cup = requests.get(url6).json()
+        cuprow = 58
+        for each in json_cup['cup_matches']:
+            cupgw = each['event']
+            entry_1 = each['entry_1_name']
+            entry_2 = each['entry_2_name']
+            entrypoints_1 = each['entry_1_points']
+            entrypoints_2 = each['entry_2_points']
+            cup_data = [cupgw, entry_1, entrypoints_1, entry_2, entrypoints_2]
+            cuprow=cuprow+1
+            for colnum in range(5):
+                sheet1.cell(row=cuprow,column=colnum + 10).value = cup_data[colnum]
+
 
         # Select data for Chip usage and enter in excel as highlights
         wildcardfill = PatternFill(start_color='ffff0000', end_color='ffff0000', fill_type='solid')
@@ -220,15 +238,16 @@ class fantasypl:
 
         # Creating Legend
         legendlist = ['Legend', 'Wildcard', 'Benchboost', 'Triple Captain', 'Free Hit']
+        legendrow = 58
         for lkey in range(5):
-            sheet1.cell(row=lkey + 59, column=2).value = legendlist[lkey]
-            lewc = sheet1.cell(row=59 + 1, column=2)
+            sheet1.cell(row=lkey + legendrow, column=2).value = legendlist[lkey]
+            lewc = sheet1.cell(row=legendrow + 1, column=2)
             lewc.fill = wildcardfill
-            lebb = sheet1.cell(row=59 + 2, column=2)
+            lebb = sheet1.cell(row=legendrow + 2, column=2)
             lebb.fill = bboostfill
-            letc = sheet1.cell(row=59 + 3, column=2)
+            letc = sheet1.cell(row=legendrow + 3, column=2)
             letc.fill = triplecapfill
-            lefh = sheet1.cell(row=59 + 4, column=2)
+            lefh = sheet1.cell(row=legendrow + 4, column=2)
             lefh.fill = freehitfill
 
         # Creating excel cell names
@@ -330,12 +349,12 @@ class fantasypl:
 
         # Clear text box and show success dialog
         self.clear()
-        messagebox.showinfo(title='Success', message='Check directory for Excel Workbook')
+        messagebox.showinfo(title='Success',
+                            message='Data for "{}" imported successfully in the directory.'.format(json_teamname))
 
     # Define function to clear dialog
     def clear(self):
         self.fpl_prompt.delete(0, 'end')
-
 
 # Call GUI window
 def main():
