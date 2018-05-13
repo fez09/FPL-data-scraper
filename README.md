@@ -24,9 +24,9 @@ Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requ
  - Final Dream Team
  - Cup history - Added on 13 May 2018
 # Json links
- - https://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
- - https://fantasy.premierleague.com/drf/entry/{}/history (GW number) - GW history
- - https://fantasy.premierleague.com/drf/bootstrap-static  - Contains all player data
- - https://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
- - https://fantasy.premierleague.com/drf/dream-team  - Dream team
- - https://fantasy.premierleague.com/drf/entry/{}/cup - Cup History - Added on 13 May 2018
+ - http://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
+ - http://fantasy.premierleague.com/drf/entry/{}/history (GW number) - GW history
+ - http://fantasy.premierleague.com/drf/bootstrap-static  - Contains all player data
+ - http://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
+ - http://fantasy.premierleague.com/drf/dream-team  - Dream team
+ - http://fantasy.premierleague.com/drf/entry/{}/cup - Cup History - Added on 13 May 2018
