@@ -1,5 +1,0 @@
-29 April, 2018 - Began writing script.
-
-7 May, 2018 - Completed base script. Uploaded to github. 
-
-13 May, 2018 - Added data for cup history.
