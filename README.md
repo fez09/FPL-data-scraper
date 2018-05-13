@@ -22,11 +22,11 @@ Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requ
  - Chips Used and when
  - Complete Transfer history with values
  - Final Dream Team
- - Cup history - Added on 13 May 2018
+ - Cup history
 # Json links
  - http://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
  - http://fantasy.premierleague.com/drf/entry/{}/history (GW number) - GW history
  - http://fantasy.premierleague.com/drf/bootstrap-static  - Contains all player data
  - http://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
  - http://fantasy.premierleague.com/drf/dream-team  - Dream team
- - http://fantasy.premierleague.com/drf/entry/{}/cup - Cup History - Added on 13 May 2018
+ - http://fantasy.premierleague.com/drf/entry/{}/cup - Cup History
