@@ -22,15 +22,13 @@ Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requ
  - Chips Used and when
  - Complete Transfer history with values
  - Final Dream Team
-# The Good
-This script exports fantasy premier league gameweek history and player data to excel sheet using the FPL API and json data. I was able to export majority of the data including gameweek average scores, each gameweek squad, the final dream team and transfer history with players' value. The resulting table was then converted into a chart consisting of gameweek score, gameweek average score and points benched. 
-# The Bad 
-There is a lot of data which is missing at the moment. I was not able to retreive the individual player scores for each gameweek and the captain/vice-captain. No support for mini-leagues and the FPL cup right now. Also weekly dream team is not present.  
+ - Cup history - Added on 13 May 2018
 # Json links
  - https://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
  - https://fantasy.premierleague.com/drf/entry/{}/history (GW number) - GW history
  - https://fantasy.premierleague.com/drf/bootstrap-static  - Contains all player data
  - https://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
  - https://fantasy.premierleague.com/drf/dream-team  - Dream team
+ - https://fantasy.premierleague.com/drf/entry/{}/cup (Cup History) - Added on 13 May 2018
  # Scope
  For the next season I will try to improve this script by adding more data like individual player scores per gameweek, cup history, mini league history of choice and more. 
