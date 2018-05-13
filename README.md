@@ -29,6 +29,6 @@ Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requ
  - https://fantasy.premierleague.com/drf/bootstrap-static  - Contains all player data
  - https://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
  - https://fantasy.premierleague.com/drf/dream-team  - Dream team
- - https://fantasy.premierleague.com/drf/entry/{}/cup (Cup History) - Added on 13 May 2018
+ - https://fantasy.premierleague.com/drf/entry/{}/cup - Cup History - Added on 13 May 2018
  # Scope
  For the next season I will try to improve this script by adding more data like individual player scores per gameweek, cup history, mini league history of choice and more. 
