@@ -23,6 +23,7 @@ Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requ
  - Complete Transfer history with values
  - Final Dream Team
  - Cup history
+ - Classic League Ranks 
 # Json links
  - http://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
  - http://fantasy.premierleague.com/drf/entry/{}/history (GW number) - GW history
