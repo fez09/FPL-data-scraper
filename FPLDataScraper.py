@@ -18,10 +18,10 @@ import base64
 from urllib.request import urlopen
 
 
-# Create class
+## Create class
 class fantasypl():
 
-    # Initialize GUI
+    ## Initialize GUI
     def __init__(self, parent):
 
         self.Frame = ttk.Frame(parent)
@@ -48,10 +48,10 @@ class fantasypl():
         self.style.configure('TButton', background='#00FF7C', font=('Calibri', 15))
         self.style.configure('TLabel', background='#00FF7C', font=('Calibri', 15, 'bold'))
 
-    # Actions after clicking submit
+    ## Actions after clicking submit
     def submit(self):
 
-        # Import history JSON data
+        ## Import history JSON data
         url1 = 'https://fantasy.premierleague.com/drf/entry/{}/history'.format(self.fpl_prompt.get())
         url2 = 'https://fantasy.premierleague.com/drf/bootstrap-static'
         json_history = requests.get(url1).json()
@@ -59,14 +59,14 @@ class fantasypl():
         json_teamname = json_history['entry']['name']
 
         messagebox.showinfo(title='Importing...',
-                            message='Importing data for "{}". Please be patient.'.format(json_teamname),)
+                            message='Importing data for "{}". Please be patient.'.format(json_teamname))
 
-        # Create workbook and sheets
+        ## Create workbook and sheets
         wb = openpyxl.Workbook()
         sheet0 = wb.create_sheet(index=0, title='Read_Me')
         sheet1 = wb.create_sheet(index=1, title='2017_2018')
 
-        # Create Read me sheet
+        ## Create Read me sheet
         sheet0['B2'].value = 'Hey all. This excel file is the result of a very simple and amateurish python script'
         sheet0['B4'].value = 'The script uses the FPL API and json data to import your history from the ' \
                              'website and then exports it to this file '
@@ -78,11 +78,15 @@ class fantasypl():
         sheet0['B10'].value = 'be aware that the code is VERY amateurish and a lof of improvements can be made.'
         sheet0['B12'].value = 'Your data is in the next sheet. Change sheets below or hold "CTRL+PgDown"'
 
-        # Create headers
+        ## Create headers
         header1 = ['GW', 'GP', 'GW AVG', 'PB', 'TM', 'TC', 'GR', 'OP', 'OR', 'Position', 'TV']
         transferheader = ['GW', 'Transfer In', 'Value', 'Transfer Out', 'Value']
         sheet1.merge_cells('E58:F58')
         sheet1['E58'] = 'Overall Dream Team'
+        sheet1.merge_cells('R58:S58')
+        sheet1['R58'] = 'League Rank History'
+        sheet1.merge_cells('J58:N58')
+        sheet1['J58'] = 'FPL Cup History'
         headerrow = 1
         gwteamheaderow = 41
         for tkey in range(5):
@@ -92,7 +96,7 @@ class fantasypl():
         for gw in range(1, 39):
             sheet1.cell(row=gwteamheaderow, column=gw + 1).value = 'GW {}'.format(gw)
 
-        # Import gameweek history and insert data in sheet
+        ## Import gameweek history and insert data in sheet
         for each in json_history['history']:
             g_w = each['event']
             points = each['points']
@@ -119,21 +123,21 @@ class fantasypl():
                 for key in range(2, 10):
                     sheet1.cell(row=rownum, column=key + 3).value = history_list[key]
 
-        # Import gameweek average points and insert data in sheet
+        ## Import gameweek average points and insert data in sheet
         for each in json_live['events']:
             g_w = each['id']
             a_v_g = each['average_entry_score']
             for rownum in range(g_w + 1, g_w + 2):
                 sheet1.cell(row=rownum, column=4).value = a_v_g
 
-        # Import all player data in premier league
+        ## Import all player data in premier league
         d = {}
         for each in json_live['elements']:
             pl_id = each['id']
             pl_name = each['web_name']
             d[pl_id] = pl_name
 
-        # Select team player data for personal team for each gameweek and enter in sheet
+        ## Select team player data for personal team for each gameweek and enter in sheet
         gwteamcol = 1
         for each in json_history['history']:
             g_w = each['event']
@@ -160,7 +164,21 @@ class fantasypl():
                 bench = sheet1.cell(row=rownum, column=colnum)
                 bench.fill = benchfill
 
-        # Import Gameweek Transfer data
+        ## Import classic league details
+        clrow = 59
+        num_of_leagues = len(json_history['leagues']['classic'])
+        clheader = ['League Name','Rank']
+        for leaguecolumn in range(2):
+            sheet1.cell(row = clrow, column=leaguecolumn+18).value = clheader[leaguecolumn]
+        for each in json_history['leagues']['classic']:
+            leaguename = each['name']
+            leagueposition = each['entry_rank']
+            league_data = [leaguename,leagueposition]
+            clrow = clrow+1
+            for clcol in range(2):
+                sheet1.cell(row = clrow, column=clcol+18).value = league_data[clcol]
+
+        ## Import Gameweek Transfer data
         url4 = 'https://fantasy.premierleague.com/drf/entry/{}/transfers'.format(self.fpl_prompt.get())
         json_transfer = requests.get(url4).json()
         gwtransferrow = 1
@@ -178,7 +196,7 @@ class fantasypl():
             for colnum in range(5):
                 sheet1.cell(row=gwtransferrow, column=colnum + 42).value = trans_data[colnum]
 
-        # Import Dream Team Data
+        ## Import Dream Team Data
         url5 = 'https://fantasy.premierleague.com/drf/dream-team'
         json_dreamteam = requests.get(url5).json()
         dtrow = 58
@@ -191,10 +209,14 @@ class fantasypl():
             for colnum in range(2):
                 sheet1.cell(row=dtrow, column=colnum + 5).value = dt_data[colnum]
 
-        # Import Cup History
+        ## Import Cup History
         url6 = 'https://fantasy.premierleague.com/drf/entry/{}/cup'.format(self.fpl_prompt.get())
         json_cup = requests.get(url6).json()
-        cuprow = 58
+        num_of_cups = len(json_cup['cup_matches'])
+        cuplist = ['GW','Team name','Points','Team Name','Points']
+        cuprow = 59
+        for col in range(5):
+            sheet1.cell(row=cuprow, column=col+10).value = cuplist[col]
         for each in json_cup['cup_matches']:
             cupgw = each['event']
             entry_1 = each['entry_1_name']
@@ -207,7 +229,7 @@ class fantasypl():
                 sheet1.cell(row=cuprow,column=colnum + 10).value = cup_data[colnum]
 
 
-        # Select data for Chip usage and enter in excel as highlights
+        ## Select data for Chip usage and enter in excel as highlights
         wildcardfill = PatternFill(start_color='ffff0000', end_color='ffff0000', fill_type='solid')
         bboostfill = PatternFill(start_color='ffff00ff', end_color='ffff00ff', fill_type='solid')
         freehitfill = PatternFill(start_color='ffffa500', end_color='ffffa500', fill_type='solid')
@@ -236,7 +258,7 @@ class fantasypl():
                     wc.fill = triplecapfill
                 break
 
-        # Creating Legend
+        ## Creating Legend
         legendlist = ['Legend', 'Wildcard', 'Benchboost', 'Triple Captain', 'Free Hit']
         legendrow = 58
         for lkey in range(5):
@@ -250,7 +272,7 @@ class fantasypl():
             lefh = sheet1.cell(row=legendrow + 4, column=2)
             lefh.fill = freehitfill
 
-        # Creating excel cell names
+        ## Creating excel cell names
         alphabet = []
         for letter in range(65, 91):
             alphabet.append(chr(letter))
@@ -259,10 +281,17 @@ class fantasypl():
             alphabeta.append('A' + chr(letter))
         # AtoAZ = alphabet + alphabeta
 
-        # Cell Styling
+        ## Cell Styling
         headerfont = Font(bold=True)
         alignment = Alignment(horizontal='center')
-
+        for key in range(10,15):    # Cup History header alignment
+            row2= sheet1.cell(row=59, column=key)
+            row2.font = headerfont
+            row2.alignment = alignment
+        for row in range(60,60+num_of_cups):
+            for col in range(10,15):
+                cup1 = sheet1.cell(row=row, column=col)
+                cup1.alignment = alignment
         for key in range(1, 13):  # GW History Table header alignment
             row1 = sheet1.cell(row=1, column=key)
             row1.font = headerfont
@@ -316,7 +345,7 @@ class fantasypl():
                 wc = sheet1.cell(row=key1, column=key2)
                 wc.fill = dreamteamfill
 
-        # Creating Position symbols for GW history
+        ## Creating Position symbols for GW history
         first = FormatObject(type='num', val=-1)
         second = FormatObject(type='num', val=0)
         third = FormatObject(type='num', val=1)
@@ -325,7 +354,7 @@ class fantasypl():
         rule = Rule(type='iconSet', iconSet=iconset)
         sheet1.conditional_formatting.add('K2:K39', cfRule=rule)
 
-        # Creating Tables
+        ## Creating Tables
         table1 = Table(displayName='GWH', ref='B1:L39')
         style1 = TableStyleInfo(name="TableStyleMedium11", showRowStripes=True)
         table2 = Table(displayName='GWT', ref='B41:AM56')
@@ -335,7 +364,7 @@ class fantasypl():
         sheet1.add_table(table1)
         sheet1.add_table(table2)
 
-        # Creating Charts
+        ## Creating Charts
         c1 = LineChart()
         c1.title = 'Overall Points / Average Points / Points Benched'
         data1 = Reference(sheet1, min_col=3, max_col=5, min_row=1, max_row=39)
@@ -344,19 +373,19 @@ class fantasypl():
         c1.add_data(data1, titles_from_data=True)
         sheet1.add_chart(c1, "O2")
 
-        # Save workbook
+        ## Save workbook
         wb.save('FPL.Data.17-18.xlsx')
 
-        # Clear text box and show success dialog
+        ## Clear text box and show success dialog
         self.clear()
         messagebox.showinfo(title='Success',
                             message='Data for "{}" imported successfully in the directory.'.format(json_teamname))
 
-    # Define function to clear dialog
+    ## Define function to clear dialog
     def clear(self):
         self.fpl_prompt.delete(0, 'end')
 
-# Call GUI window
+## Call GUI window
 def main():
     root = Tk()
     fantasypl(root)
