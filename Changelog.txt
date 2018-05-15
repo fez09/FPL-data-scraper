@@ -2,3 +2,4 @@
 7 May 2018 - Completed base code and opened github repository
 10 May 2018 - Made improvements to the code
 13 May 2018 - Added cup history data 
+15 May 2018 - Added classic league ranks
