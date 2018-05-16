@@ -136,29 +136,36 @@ class fantasypl():
             pl_id = each['id']
             pl_name = each['web_name']
             d[pl_id] = pl_name
-
+        print(d)
         ## Select team player data for personal team for each gameweek and enter in sheet
         gwteamcol = 1
+        capfill = PatternFill(start_color='ff15dd43', end_color='ff15dd43', fill_type='solid')
+        vcapfill = PatternFill(start_color='ff00FFDA', end_color='ff00FFDA', fill_type='solid')
         for each in json_history['history']:
             g_w = each['event']
             url3 = 'https://fantasy.premierleague.com/drf/entry/{}/event/{}/picks'.format(self.fpl_prompt.get(), g_w)
             json_pick = requests.get(url3).json()
             gwteamcol = gwteamcol + 1
             gwteamrow = 42
-            # noinspection PyAssignmentToLoopOrWithParameter
+            capfont = Font(underline='single')
             for each in json_pick['picks']:
                 player_id = each['element']
+                captain = each['is_captain']
+                vicecapt = each['is_vice_captain']
                 pl_name = d[player_id]
                 plist = {player_id: pl_name}
                 for values in plist.values():
                     sheet1.cell(row=gwteamrow, column=gwteamcol).value = values
-                    gwteamrow = gwteamrow + 1
-        startfill = PatternFill(start_color='ff15dd43', end_color='ff15dd43', fill_type='solid')
-        benchfill = PatternFill(start_color='ff00FFDA', end_color='ff00FFDA', fill_type='solid')
-        for rownum in range(42, 53):
-            for colnum in range(2, 40):
-                start = sheet1.cell(row=rownum, column=colnum)
-                start.fill = startfill
+                if captain == True:
+                    capf = sheet1.cell(row=gwteamrow, column=gwteamcol)
+                    capf.fill = capfill
+                    capf.font = capfont
+                if vicecapt == True:
+                    vcapf = sheet1.cell(row=gwteamrow,column=gwteamcol)
+                    vcapf.fill = vcapfill
+                gwteamrow = gwteamrow + 1
+
+        benchfill = PatternFill(start_color='ffBA6B12', end_color='ffBA6B12', fill_type='solid')
         for rownum in range(53, 57):
             for colnum in range(2, 40):
                 bench = sheet1.cell(row=rownum, column=colnum)
@@ -167,16 +174,16 @@ class fantasypl():
         ## Import classic league details
         clrow = 59
         num_of_leagues = len(json_history['leagues']['classic'])
-        clheader = ['League Name','Rank']
+        clheader = ['League Name', 'Rank']
         for leaguecolumn in range(2):
-            sheet1.cell(row = clrow, column=leaguecolumn+18).value = clheader[leaguecolumn]
+            sheet1.cell(row=clrow, column=leaguecolumn + 18).value = clheader[leaguecolumn]
         for each in json_history['leagues']['classic']:
             leaguename = each['name']
             leagueposition = each['entry_rank']
-            league_data = [leaguename,leagueposition]
-            clrow = clrow+1
+            league_data = [leaguename, leagueposition]
+            clrow = clrow + 1
             for clcol in range(2):
-                sheet1.cell(row = clrow, column=clcol+18).value = league_data[clcol]
+                sheet1.cell(row=clrow, column=clcol + 18).value = league_data[clcol]
 
         ## Import Gameweek Transfer data
         url4 = 'https://fantasy.premierleague.com/drf/entry/{}/transfers'.format(self.fpl_prompt.get())
@@ -213,10 +220,10 @@ class fantasypl():
         url6 = 'https://fantasy.premierleague.com/drf/entry/{}/cup'.format(self.fpl_prompt.get())
         json_cup = requests.get(url6).json()
         num_of_cups = len(json_cup['cup_matches'])
-        cuplist = ['GW','Team name','Points','Team Name','Points']
+        cuplist = ['GW', 'Team name', 'Points', 'Team Name', 'Points']
         cuprow = 59
         for col in range(5):
-            sheet1.cell(row=cuprow, column=col+10).value = cuplist[col]
+            sheet1.cell(row=cuprow, column=col + 10).value = cuplist[col]
         for each in json_cup['cup_matches']:
             cupgw = each['event']
             entry_1 = each['entry_1_name']
@@ -224,10 +231,9 @@ class fantasypl():
             entrypoints_1 = each['entry_1_points']
             entrypoints_2 = each['entry_2_points']
             cup_data = [cupgw, entry_1, entrypoints_1, entry_2, entrypoints_2]
-            cuprow=cuprow+1
+            cuprow = cuprow + 1
             for colnum in range(5):
-                sheet1.cell(row=cuprow,column=colnum + 10).value = cup_data[colnum]
-
+                sheet1.cell(row=cuprow, column=colnum + 10).value = cup_data[colnum]
 
         ## Select data for Chip usage and enter in excel as highlights
         wildcardfill = PatternFill(start_color='ffff0000', end_color='ffff0000', fill_type='solid')
@@ -284,12 +290,12 @@ class fantasypl():
         ## Cell Styling
         headerfont = Font(bold=True)
         alignment = Alignment(horizontal='center')
-        for key in range(10,15):    # Cup History header alignment
-            row2= sheet1.cell(row=59, column=key)
+        for key in range(10, 15):  # Cup History header alignment
+            row2 = sheet1.cell(row=59, column=key)
             row2.font = headerfont
             row2.alignment = alignment
-        for row in range(60,60+num_of_cups):
-            for col in range(10,15):
+        for row in range(60, 60 + num_of_cups):
+            for col in range(10, 15):
                 cup1 = sheet1.cell(row=row, column=col)
                 cup1.alignment = alignment
         for key in range(1, 13):  # GW History Table header alignment
@@ -384,6 +390,7 @@ class fantasypl():
     ## Define function to clear dialog
     def clear(self):
         self.fpl_prompt.delete(0, 'end')
+
 
 ## Call GUI window
 def main():
