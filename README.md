@@ -22,7 +22,7 @@ Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requ
  - Chips Used and when
  - Complete Transfer history with values
  - Final Dream Team
- - Cup history
+ - FPL Cup history
  - Classic League Ranks 
 # Json links
  - http://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
