@@ -3,3 +3,4 @@
 10 May 2018 - Made improvements to the code
 13 May 2018 - Added cup history data 
 15 May 2018 - Added classic league ranks
+16 May 2018 - Added Captain/Vice-captain patterns
