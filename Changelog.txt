@@ -8,3 +8,4 @@
 17 May 2018 - Added scores for each player in each GW
 18 May 2018 - Added h2h history
             - Added Weekly Dream Team
+            - Bug fixes
