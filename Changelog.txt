@@ -2,5 +2,9 @@
 7 May 2018 - Completed base code and opened github repository
 10 May 2018 - Made improvements to the code
 13 May 2018 - Added cup history data 
+14 May 2018 - Bug fixes
 15 May 2018 - Added classic league ranks
 16 May 2018 - Added Captain/Vice-captain patterns
+17 May 2018 - Added scores for each player in each GW
+18 May 2018 - Added h2h history
+            - Added Weekly Dream Team
