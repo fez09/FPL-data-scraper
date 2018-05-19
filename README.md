@@ -1,5 +1,5 @@
-## Version 1.5.1
-# The Script
+## Fantasy Premier League Data Fetcher - Version 1.5.1
+
 Executing the script prompts a GUI interface asking the user to enter their fantasy team ID. This can be found easily on the wesite. Clicking the submit button then proceeds to import all json data from the website and exporting it to excel. 
 
 Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requests to fetch Json data. 
