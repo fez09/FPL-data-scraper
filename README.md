@@ -1,4 +1,4 @@
-
+## Version 1.5.1
 # The Script
 Executing the script prompts a GUI interface asking the user to enter their fantasy team ID. This can be found easily on the wesite. Clicking the submit button then proceeds to import all json data from the website and exporting it to excel. 
 
