@@ -32,3 +32,5 @@ Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requ
  - http://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
  - http://fantasy.premierleague.com/drf/dream-team  - Dream team
  - http://fantasy.premierleague.com/drf/entry/{}/cup - Cup History
+ - https://fantasy.premierleague.com/drf/event/{}/live (FPL ID) - Live Player Points
+ - https://fantasy.premierleague.com/drf/dream-team/{} (GW Number) - Weekly Dream Team
