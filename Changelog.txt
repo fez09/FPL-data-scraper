@@ -1,11 +1,30 @@
-28 April 2018 - Started project with Python 3
-7 May 2018 - Completed base code and opened github repository
-10 May 2018 - Made improvements to the code
-13 May 2018 - Added cup history data 
-14 May 2018 - Bug fixes
-15 May 2018 - Added classic league ranks
-16 May 2018 - Added Captain/Vice-captain patterns
-17 May 2018 - Added scores for each player in each GW
-18 May 2018 - Added h2h history
-            - Added Weekly Dream Team
-            - Bug fixes
+28 April 2018           - Version 1.0.0
+                        - Started project with Python 3
+                        
+7 May 2018              - Version 1.0.0
+                        - Completed base code and opened github repository
+                        
+10 May 2018             - Verson 1.0.1
+                        - Made improvements to the code
+                        
+13 May 2018             - Version 1.1.0
+                        - Added cup history data 
+                        
+14 May 2018             - Version 1.1.1
+                        - Bug fixes
+                        
+15 May 2018             - Version 1.2.0
+                        - Added classic league ranks
+                        
+16 May 2018             - Version 1.3.0
+                        - Added Captain/Vice-captain patterns
+                        
+17 May 2018             - Version 1.4.0
+                        - Added scores for each player in each GW
+                        
+18 May 2018             - Version 1.5.0
+                        - Added h2h history
+                        - Added Weekly Dream Team
+                        
+19 May 2018             - Version 1.5.1
+                        - Bug fixes
