@@ -49,7 +49,6 @@ class fantasypl():
         self.style.configure('TButton', background='#00FF7C', font=('Calibri', 16))
         self.style.configure('TLabel', background='#00FF7C', font=('Calibri', 15, 'bold'))
 
-
     ## Combined function for button press
     def button_press(self):
         self.popup()
@@ -68,13 +67,6 @@ class fantasypl():
     ## Actions after clicking submit (importing data and creating workbook)
     def submit(self):
 
-        ## Import history JSON data
-        url1 = 'https://fantasy.premierleague.com/drf/entry/{}/history'.format(self.fpl_prompt.get())
-        url2 = 'https://fantasy.premierleague.com/drf/bootstrap-static'
-        json_history = requests.get(url1).json()
-        json_live = requests.get(url2).json()
-        json_teamname = json_history['entry']['name']
-
         ## Create workbook and sheets
         wb = openpyxl.Workbook()
         sheet0 = wb.create_sheet(index=0, title='Read_Me')
@@ -88,6 +80,13 @@ class fantasypl():
                              'Or just donate to a charity of your choice'
         sheet0['B8'].value = 'be aware that the code is VERY amateurish and a lof of improvements can be made.'
         sheet0['B10'].value = 'Your data is in the next sheet. Change sheet tabs below or hold "CTRL+PgDown"'
+
+        ## Import history JSON data
+        url1 = 'https://fantasy.premierleague.com/drf/entry/{}/history'.format(self.fpl_prompt.get())
+        url2 = 'https://fantasy.premierleague.com/drf/bootstrap-static'
+        json_history = requests.get(url1).json()
+        json_live = requests.get(url2).json()
+        json_teamname = json_history['entry']['name']
 
         ## Import gameweek history and insert data in sheet
         header1 = ['GW', 'GP', 'GW AVG', 'GW HS', 'PB', 'TM', 'TC', 'GR', 'OP', 'OR', 'Position', 'TV']
@@ -144,28 +143,28 @@ class fantasypl():
         freehitfill = PatternFill(start_color='ffff00ff', end_color='ffff00ff', fill_type='solid')
         bboostfill = PatternFill(start_color='ffffa500', end_color='ffffa500', fill_type='solid')
         triplecapfill = PatternFill(start_color='ff0099ff', end_color='ff0099ff', fill_type='solid')
-        gwh_col = range(1, 13)
+        gwh_col = range(3, 15)
         for each in json_history['chips']:
             chipgw = each['event']
             chip = each['name']
             while chip == 'wildcard':
                 for key in gwh_col:
-                    wc = sheet1.cell(row=chipgw + 1, column=key + 2)
+                    wc = sheet1.cell(row=chipgw + 1, column=key)
                     wc.fill = wildcardfill
                 break
             while chip == 'bboost':
                 for key in gwh_col:
-                    wc = sheet1.cell(row=chipgw + 1, column=key + 2)
+                    wc = sheet1.cell(row=chipgw + 1, column=key)
                     wc.fill = bboostfill
                 break
             while chip == 'freehit':
                 for key in gwh_col:
-                    wc = sheet1.cell(row=chipgw + 1, column=key + 2)
+                    wc = sheet1.cell(row=chipgw + 1, column=key)
                     wc.fill = freehitfill
                 break
             while chip == '3xc':
                 for key in gwh_col:
-                    wc = sheet1.cell(row=chipgw + 1, column=key + 2)
+                    wc = sheet1.cell(row=chipgw + 1, column=key)
                     wc.fill = triplecapfill
                 break
 
@@ -185,13 +184,13 @@ class fantasypl():
                 bench = sheet1.cell(row=rownum, column=colnum)
                 bench.fill = benchfill
 
+        capfont = Font(underline='single')
         for each in json_history['history']:
             g_w = each['event']
             url3 = 'https://fantasy.premierleague.com/drf/entry/{}/event/{}/picks'.format(self.fpl_prompt.get(), g_w)
             json_pick = requests.get(url3).json()
             gwteamcol = gwteamcol + 2
             gwteamrow = 42
-            capfont = Font(underline='single')
             url4 = 'https://fantasy.premierleague.com/drf/event/{}/live'.format(g_w)
             json_points = requests.get(url4).json()
             total_players = len(json_points['elements'])
@@ -530,7 +529,7 @@ class fantasypl():
         table5.tableStyleInfo = style5
         sheet1.add_table(table5)
 
-        if num_of_cups > 0:
+        if num_of_h2h > 0:
             h2h_table_row = 2
         else:
             h2h_table_row = 3
