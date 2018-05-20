@@ -1,4 +1,4 @@
-# Fantasy Premier League Data Fetcher - Version 1.5.1
+# Fantasy Premier League Data Fetcher
 
 Executing the script prompts a GUI interface asking the user to enter their fantasy team ID. This can be found easily on the wesite. Clicking the submit button then proceeds to import all json data from the website and exporting it to excel. 
 
