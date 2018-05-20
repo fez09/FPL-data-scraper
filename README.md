@@ -2,8 +2,13 @@
 
 Executing the script prompts a GUI interface asking the user to enter their fantasy team ID. This can be found easily on the wesite. Clicking the submit button then proceeds to import all json data from the website and exporting it to excel. 
 
-Modules used are mainly tkinter for GUI, openpyxl for Excel shenanigans and requests to fetch Json data. 
-
+## Modules Used 
+ - tkinter - for GUI
+ - requests - to fetch json data from FPL website
+ - openpyxl - to write the imported data to excel workbook
+ - os - to show the path of the created excel file
+ - I've also used urlopen and bas64 to read the FPL logo off of an imgur link to place it in the GUI 
+ 
 ## List of data imported
  - Gameweek Score
  - Gameweek Average Score
