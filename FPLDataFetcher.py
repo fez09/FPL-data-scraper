@@ -29,7 +29,7 @@ class fantasypl():
         self.Frame.grid()
 
         parent.resizable(False, False)
-        parent.title('FPL Data Fetcher - v1.5.1')
+        parent.title('FPL Data Fetcher - v1.5.2')
 
         image_url = "http://i.imgur.com/QoNiPLP.gif"
         image_byt = urlopen(image_url).read()
