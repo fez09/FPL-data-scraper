@@ -31,3 +31,6 @@
                         
 20 May 2018             - Version 1.5.2
                         - Bug fixes and minor improvements
+
+21 May 2018             - Version 1.5.3
+                        - Made improvements to code
