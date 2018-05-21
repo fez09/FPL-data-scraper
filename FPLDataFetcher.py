@@ -588,7 +588,7 @@ class fantasypl():
 
         ## Creating Chart
         chart1 = LineChart()
-        chart1.title = 'Gameweek Points / Average Points / Points Benched'
+        chart1.title = 'Gameweek Points / Average Points / Points Benched / Highest GW Score'
         data1 = Reference(sheet1, min_col=4, max_col=7, min_row=1, max_row=39)
         chart1.height = 20
         chart1.width = 50
