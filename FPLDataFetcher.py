@@ -17,6 +17,7 @@ from openpyxl.formatting.rule import IconSet, Rule, FormatObject
 import base64
 from urllib.request import urlopen
 from os import path
+from time import time
 
 
 ## Create class
@@ -29,7 +30,7 @@ class fantasypl():
         self.Frame.grid()
 
         parent.resizable(False, False)
-        parent.title('FPL Data Fetcher - v1.5.2')
+        parent.title('FPL Data Fetcher - v1.5.3')
 
         image_url = "http://i.imgur.com/QoNiPLP.gif"
         image_byt = urlopen(image_url).read()
@@ -42,6 +43,7 @@ class fantasypl():
         ttk.Label(self.Frame, text="Data Is For 2017/2018").grid(row=5, padx=5, pady=5)
         self.fpl_prompt = ttk.Entry(self.Frame, width=25, font=('Times New Roman', 16), justify=CENTER)
         self.fpl_prompt.grid(row=3, padx=5, pady=5)
+
         button1 = ttk.Button(self.Frame, text="Submit", command=self.button_press)
         button1.grid(row=4, padx=5, pady=5)
         self.style = ttk.Style()
@@ -51,8 +53,25 @@ class fantasypl():
 
     ## Combined function for button press
     def button_press(self):
-        self.popup()
-        self.submit()
+
+        ## Check to see if a valid FPL ID is entered (Numbers only)
+        if len(self.fpl_prompt.get()) != 0:
+            if self.fpl_prompt.get().isdigit():
+                if int(self.fpl_prompt.get()) < 5910136:  # Total number of FPL Players. Must know this value.
+                    self.popup()
+                    self.submit()
+                else:
+                    messagebox.showinfo(title="Error", message="Please enter a valid FPL ID")
+                    self.fpl_prompt.delete(0, 'end')
+                    return
+            else:
+                messagebox.showinfo(title="Error", message="Please enter a valid FPL ID")
+                self.fpl_prompt.delete(0, 'end')
+                return
+        else:
+            messagebox.showinfo(title="Error", message="Please enter a valid FPL ID")
+            self.fpl_prompt.delete(0, 'end')
+            return
 
     ## Loading Label after clicking submit
     def popup(self):
@@ -67,18 +86,20 @@ class fantasypl():
     ## Actions after clicking submit (importing data and creating workbook)
     def submit(self):
 
+        ## Progress bar time
+        # self.start_time = time()
+
         ## Create workbook and sheets
         wb = openpyxl.Workbook()
         sheet0 = wb.create_sheet(index=0, title='Read_Me')
         sheet1 = wb.create_sheet(index=1, title='2017_2018')
 
         ## Create Read me sheet
-        sheet0['B2'].value = 'Hey all. This excel file is the result of a very simple and amateurish python script'
+        sheet0['B2'].value = 'Hey all. This excel file is the result of a python script'
         sheet0['B4'].value = 'The script uses the FPL API and json data to import your history from the ' \
                              'website and then exports it to this file '
-        sheet0['B6'].value = 'Contact/Donate at ten.dimensions10@gmail.com. ' \
-                             'Or just donate to a charity of your choice'
-        sheet0['B8'].value = 'be aware that the code is VERY amateurish and a lof of improvements can be made.'
+        sheet0['B6'].value = 'Report bugs, Contact/Donate at ten.dimensions10@gmail.com.'
+        sheet0['B8'].value = 'be aware that the code is VERY raw and a lof of improvements can be made.'
         sheet0['B10'].value = 'Your data is in the next sheet. Change sheet tabs below or hold "CTRL+PgDown"'
 
         ## Import history JSON data
@@ -87,6 +108,7 @@ class fantasypl():
         json_history = requests.get(url1).json()
         json_live = requests.get(url2).json()
         json_teamname = json_history['entry']['name']
+        num_of_gw = len(json_history['history'])
 
         ## Import gameweek history and insert data in sheet
         header1 = ['GW', 'GP', 'GW AVG', 'GW HS', 'PB', 'TM', 'TC', 'GR', 'OP', 'OR', 'Position', 'TV']
@@ -175,7 +197,6 @@ class fantasypl():
             sheet1.cell(row=gwteamheaderow, column=gwtitle).value = str('GW {}'.format(gw))
             sheet1.cell(row=gwteamheaderow, column=gwtitle + 1).value = str('P {}'.format(gw))
             gwtitle = gwtitle + 2
-        gwteamcol = 1
         capfill = PatternFill(start_color='ff15dd43', end_color='ff15dd43', fill_type='solid')
         vcapfill = PatternFill(start_color='ff00FFDA', end_color='ff00FFDA', fill_type='solid')
         benchfill = PatternFill(start_color='ffBA6B12', end_color='ffBA6B12', fill_type='solid')
@@ -184,6 +205,7 @@ class fantasypl():
                 bench = sheet1.cell(row=rownum, column=colnum)
                 bench.fill = benchfill
 
+        gwteamcol = (39 * 2 - int(num_of_gw * 2)) - 1  # To accomodate for people who started late.
         capfont = Font(underline='single')
         for each in json_history['history']:
             g_w = each['event']
@@ -263,7 +285,7 @@ class fantasypl():
                 for colnum in range(5):
                     sheet1.cell(row=cuprow, column=colnum + 74).value = cup_data[colnum]
         else:
-            sheet1.cell(row=3, column=74).value = "Failed to qualify for the cup. NOOB."
+            sheet1.cell(row=3, column=74).value = "Failed to qualify for the cup. Noob."
 
         ## Import h2h details
         sheet1.merge_cells('BN1:BO1')  # H2H Team Header
@@ -286,27 +308,35 @@ class fantasypl():
         else:
             sheet1.cell(row=3, column=66).value = "No H2H leagues entered." \
                                                   ""
-        ## Import Gameweek Transfer data
+        ## Import Gameweek Transfer history
+        sheet1.merge_cells('CD1:CH1')
+        sheet1['CD1'].value = 'Transfer History'
+
         transferheader = ['GW', 'Transfer In', 'Value In ', 'Transfer Out', 'Value Out']
-        transferhrow = 1
+        transferhrow = 2
         for tkey in range(5):
             sheet1.cell(row=transferhrow, column=tkey + 82).value = str(transferheader[tkey])
         url5 = 'https://fantasy.premierleague.com/drf/entry/{}/transfers'.format(self.fpl_prompt.get())
         json_transfer = requests.get(url5).json()
-        gwtransferrow = 1
+        gwtransferrow = 2
+        gwtransfercol = 82
         num_of_t = len(json_transfer['history'])
-        for each in json_transfer['history']:
-            transferin = each['element_in']
-            transferout = each['element_out']
-            incost = each['element_in_cost']
-            outcost = each['element_out_cost']
-            transfergw = each['event']
-            t_in_name = player_d.get(transferin, 0)
-            t_out_name = player_d.get(transferout, 0)
-            trans_data = [transfergw, t_in_name, incost / 10, t_out_name, outcost / 10]
-            gwtransferrow = gwtransferrow + 1
-            for colnum in range(5):
-                sheet1.cell(row=gwtransferrow, column=colnum + 82).value = trans_data[colnum]
+
+        if num_of_t == 0:
+            sheet1.cell(row=gwtransferrow + 1, column=gwtransfercol).value = "No Transfers Made"
+        else:
+            for each in json_transfer['history']:
+                transferin = each['element_in']
+                transferout = each['element_out']
+                incost = each['element_in_cost']
+                outcost = each['element_out_cost']
+                transfergw = each['event']
+                t_in_name = player_d.get(transferin, 0)
+                t_out_name = player_d.get(transferout, 0)
+                trans_data = [transfergw, t_in_name, incost / 10, t_out_name, outcost / 10]
+                gwtransferrow = gwtransferrow + 1
+                for colnum in range(5):
+                    sheet1.cell(row=gwtransferrow, column=colnum + gwtransfercol).value = trans_data[colnum]
 
         ## Import Overall Dream Team Data
         sheet1.merge_cells('BI1:BJ1')  # Dream Team Header
@@ -338,9 +368,8 @@ class fantasypl():
             dttitle = dttitle + 2
 
         dtteamcol = 1
-        for each in json_history['history']:
-            gw = each['event']
-            url7 = 'https://fantasy.premierleague.com/drf/dream-team/{}'.format(gw)
+        for each in range(1, 39):
+            url7 = 'https://fantasy.premierleague.com/drf/dream-team/{}'.format(each)
             json_weeklydt = requests.get(url7).json()
             dtteamrow = 60
             dtteamcol = dtteamcol + 2
@@ -383,6 +412,7 @@ class fantasypl():
         ## Cell Styling
         headerfont = Font(bold=True)
         alignment = Alignment(horizontal='center')
+
         for key in range(74, 79):  # FPL CUP 'GW/Team Name/Points/Team Name/Points'
             row2 = sheet1.cell(row=2, column=key)
             row2.font = headerfont
@@ -434,6 +464,10 @@ class fantasypl():
             for key2 in range(82, 88):
                 set3 = sheet1.cell(row=key1, column=key2)
                 set3.alignment = alignment
+        for key in range(82, 88):
+            set4 = sheet1.cell(row=1, column=key)
+            set4.alignment = alignment
+            set4.font = headerfont
 
         for key in range(82, 88):  # Transfer history 'GW/Transfer in/Value....'
             row1 = sheet1.cell(row=1, column=key)
@@ -509,7 +543,11 @@ class fantasypl():
         table2.tableStyleInfo = style2
         sheet1.add_table(table2)
 
-        table3 = Table(displayName='TH', ref='CD1:CH{}'.format(num_of_t + 1))  # Transfer History
+        if num_of_t > 0:
+            num_of_trow = num_of_t
+        else:
+            num_of_trow = 1
+        table3 = Table(displayName='TH', ref='CD2:CH{}'.format(num_of_trow + 2))  # Transfer History
         style3 = TableStyleInfo(name="TableStyleMedium12", showRowStripes=True)
         table3.tableStyleInfo = style3
         sheet1.add_table(table3)
