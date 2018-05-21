@@ -4,6 +4,12 @@ Code was written in Python 3. I chose python since I just started learning it a 
 
 Executing the script prompts a GUI interface asking the user to enter their fantasy team ID. This can be found easily on the wesite. Clicking the submit button then proceeds to import all json data from the website and exporting it to excel. 
 
+## Requirements
+Whatever is required by the openpyxl and tkinter modules, ie,
+ - Windows/Mac device
+ - Microsoft Excel 2010 or newer
+
+ 
 ## Modules Used 
  - tkinter - for GUI
  - requests - to fetch json data from FPL website
@@ -41,3 +47,5 @@ Executing the script prompts a GUI interface asking the user to enter their fant
  - http://fantasy.premierleague.com/drf/entry/{}/cup - Cup History
  - https://fantasy.premierleague.com/drf/event/{}/live (FPL ID) - Live Player Points
  - https://fantasy.premierleague.com/drf/dream-team/{} (GW Number) - Weekly Dream Team
+
+
