@@ -17,7 +17,6 @@ from openpyxl.formatting.rule import IconSet, Rule, FormatObject
 import base64
 from urllib.request import urlopen
 from os import path
-from time import time
 
 
 ## Create class
