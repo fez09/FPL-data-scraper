@@ -34,3 +34,5 @@
 
 21 May 2018             - Version 1.5.3
                         - Made improvements to code
+
+25 May 2018             - Support for x32 bit Windows
