@@ -85,9 +85,6 @@ class fantasypl():
     ## Actions after clicking submit (importing data and creating workbook)
     def submit(self):
 
-        ## Progress bar time
-        # self.start_time = time()
-
         ## Create workbook and sheets
         wb = openpyxl.Workbook()
         sheet0 = wb.create_sheet(index=0, title='Read_Me')
