@@ -6,7 +6,7 @@ Executing the script prompts a GUI interface asking the user to enter their fant
 
 ## Requirements
 Whatever is required by the openpyxl and tkinter modules, ie,
- - Windows/Mac device
+ - Windows/Mac device (The app won't work on Mac since I used pyinstaller on Windows to generate the executable. However you should still be able to run the code on a Mac device if you have Python)
  - Microsoft Excel 2010 or newer
 
  
