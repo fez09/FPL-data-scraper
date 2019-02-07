@@ -10,7 +10,7 @@ Screenshots: https://imgur.com/a/REVPh2x
 
 ## Requirements
 Whatever is required by the openpyxl and tkinter modules, ie,
- - Windows/Mac device (The app won't work on Mac since I used pyinstaller on Windows to generate the executable. However you should still be able to run the code on a Mac device if you have Python)
+ - Windows/Mac device (The app won't work on Mac since I used pyinstaller on Windows to generate the executable. However you should still be able to run a revised code on a Mac device if you have Python)
  - Microsoft Excel 2010 or newer
 
  
@@ -19,7 +19,7 @@ Whatever is required by the openpyxl and tkinter modules, ie,
  - requests - to fetch json data from FPL website
  - openpyxl - to write the imported data to excel workbook
  - os - to show the path of the created excel file
- - I've also used urlopen and bas64 to read the FPL logo off of an imgur link to place it in the GUI 
+ - I've also used urlopen and base64 to read the FPL logo off of an imgur link to place it in the GUI 
  
 ## List of data imported
  - Gameweek Score
