@@ -44,7 +44,7 @@ Whatever is required by the openpyxl and tkinter modules, ie,
  
 ## Json links
  - http://fantasy.premierleague.com/drf/entry/{}/event/{}/picks (FPL ID, Gameweek number) - Live team points
- - http://fantasy.premierleague.com/drf/entry/{}/history (GW number) - GW history
+ - http://fantasy.premierleague.com/drf/entry/{}/history (FPL ID) - GW history
  - http://fantasy.premierleague.com/drf/bootstrap-static  - Contains all player data
  - http://fantasy.premierleague.com/drf/entry/{}/transfers (GW number) - Transfer history
  - http://fantasy.premierleague.com/drf/dream-team  - Dream team
