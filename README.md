@@ -1,4 +1,4 @@
-# Fantasy Premier League Data Fetcher
+# Fantasy Premier League Data Fetcher (Updated for 2019/2020)
 
 Code was written in Python 3. I chose python since I just started learning it a couple of months ago and the openpyxl module is a way to export data to excel sheets.
 
@@ -6,7 +6,7 @@ Executing the script prompts a GUI interface asking the user to enter their fant
 
 Youtube tutorial: https://youtu.be/z-U3RSlvmEw
 
-Screenshots: https://imgur.com/a/REVPh2x
+Screenshots: https://imgur.com/a/lp27xAn
 
 ## Requirements
 Whatever is required by the openpyxl and tkinter modules, ie,
@@ -30,6 +30,8 @@ Whatever is required by the openpyxl and tkinter modules, ie,
  - Gameweek Rank
  - Overall Points
  - Overall Rank
+ - Percentile Overall Rank (v2.0)
+ - Percentile Gameweek Rank (v2.0)
  - Position in overall leaderboard
  - Team Value
  - Weekly Squad
