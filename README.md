@@ -9,7 +9,7 @@ Screenshots: https://imgur.com/a/lp27xAn
 
 ## Requirements
 Whatever is required by the openpyxl and tkinter modules, ie,
- - Windows/Mac device (The app won't work on Mac since I used pyinstaller on Windows to generate the executable. However you should still be able to run a revised code on a Mac device if you have Python)
+ - Windows device
  - Microsoft Excel 2010 or newer
 
  
