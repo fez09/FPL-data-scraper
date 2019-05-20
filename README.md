@@ -1,5 +1,4 @@
-# Fantasy Premier League Data Fetcher (Updated for 2019/2020)
-
+# Fantasy Premier League Data Fetcher
 Code was written in Python 3. I chose python since I just started learning it a couple of months ago and the openpyxl module is a way to export data to excel sheets.
 
 Executing the script prompts a GUI interface asking the user to enter their fantasy team ID. This can be found easily on the wesite. Clicking the submit button then proceeds to import all json data from the website and exporting it to excel. 
