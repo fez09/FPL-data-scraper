@@ -7,6 +7,9 @@ Youtube tutorial: https://youtu.be/DM9-e84iDZ8
 
 Screenshots: https://imgur.com/a/lp27xAn
 
+
+### FPL have changed their API, I will update the app soon to reflect this change. Thank you 
+
 ## Requirements
 Whatever is required by the openpyxl and tkinter modules, ie,
  - Windows device
