@@ -7,8 +7,9 @@ Youtube tutorial: https://youtu.be/DM9-e84iDZ8
 
 Screenshots: https://imgur.com/a/lp27xAn
 
+## **Data updated to include additional gameweeks** . 
 
-### Due to covid-19, an additional 9 gameweeks were added to the FPL database, which resulted in the excel sheet formatting being out of order. I am in the process of updating the code and it will be ready soon. 
+## ~~Due to covid-19, an additional 9 gameweeks were added to the FPL database, which resulted in the excel sheet formatting being out of order. I am in the process of updating the code and it will be ready soon~~ . 
 
 Stay Safe.
 
