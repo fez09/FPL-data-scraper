@@ -42,5 +42,5 @@
                         - Support for 2019/2020 Season
                         - Added Percentile GW Rank and Percentile Overall Rank columns
 
-12 Aug 2020             - Version 2.1
+12 Aug 2020             - Version 3.0
                         - Added covid-19 Gameweeks. 
