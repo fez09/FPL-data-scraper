@@ -1,11 +1,10 @@
-# FPL DATA FETCHER - May 2019
-# THIS IS FOR THE 2019 - 2020 Season
+# FPL DATA FETCHER - May 2021
+# THIS IS FOR THE 2020 - 2021 Season
 # This code extracts the score history from Fantasy Premier League website
 # Using the json data
 # and exports it to an Excel Workbook
-# https://www.fezfiles.com/fpl-data-fetcher
+# https://www.fezfiles.net/fpl-data-fetcher
 # https://github.com/fez09/FPL-data-scraper
-#
 
 from tkinter import *
 from tkinter import messagebox
@@ -20,7 +19,6 @@ import base64
 from urllib.request import urlopen
 from os import path
 
-
 ## Create class
 
 class fantasypl():
@@ -32,7 +30,7 @@ class fantasypl():
         self.Frame.grid()
 
         parent.resizable(False, False)
-        parent.title('FPL Data Fetcher - v3')
+        parent.title('FPL Data Fetcher - v3.1')
 
         image_url = "http://i.imgur.com/QoNiPLP.gif"
         image_byt = urlopen(image_url).read()
@@ -42,7 +40,7 @@ class fantasypl():
         self.logo = PhotoImage(data=image_b64)
         ttk.Label(self.Frame, image=self.logo).grid(row=1)
         ttk.Label(self.Frame, text="Enter your FPL ID").grid(row=2, padx=5, pady=5)
-        ttk.Label(self.Frame, text="Data is for 2019/2020").grid(row=5, padx=5, pady=5)
+        ttk.Label(self.Frame, text="Data is for 2020/2021").grid(row=5, padx=5, pady=5)
         self.fpl_prompt = ttk.Entry(self.Frame, width=25, font=('Times New Roman', 16), justify=CENTER)
         self.fpl_prompt.grid(row=3, padx=5, pady=5)
 
@@ -59,7 +57,7 @@ class fantasypl():
         ## Check to see if a valid FPL ID is entered (Numbers only)
         if len(self.fpl_prompt.get()) != 0:
             if self.fpl_prompt.get().isdigit():
-                if int(self.fpl_prompt.get()) < 6324237:  # Total number of FPL Players. Must know this value.
+                if int(self.fpl_prompt.get()) < 8240321:  # Total number of FPL Players. Must know this value.
                     self.popup()
                     self.submit()
                 else:
@@ -99,9 +97,9 @@ class fantasypl():
         sheet0['B4'].value = 'The script uses the FPL API and json data to import your history from the ' \
                              'website and then exports it to this file '
         sheet0[
-            'B6'].value = 'See more info at my site https://www.fezfiles.com/fpl-data-fetcher. Report bugs, contact at ten.dimensions10@gmail.com or Twitter: https://twitter.com/fez9o'
+            'B6'].value = 'See more info at my site https://www.fezfiles.net/fpl-data-fetcher. Report bugs, contact at ten.dimensions10@gmail.com or Twitter: https://twitter.com/fez9o'
         sheet0['B8'].value = 'be aware that the code is raw and a lof of improvements can be made.'
-        sheet0['B10'].value = 'Your data is in the next sheet. Change sheet tabs below or hold "CTRL+PgDown"'
+        sheet0['B10'].value = 'Your data is in the next sheet. Change sheet tabs below or hold "CTRL+PageDown"'
 
         ## Import history JSON data
         url1 = 'https://fantasy.premierleague.com/api/entry/{}/history/'.format(self.fpl_prompt.get())
@@ -215,21 +213,21 @@ class fantasypl():
                 break
 
         ## Import weekly team player data and points
-        gwteamheaderow = 50 #41+9
+        gwteamheaderow = 41
         gwtitle = 3
-        for gw in range(1, 48): #39+9
+        for gw in range(1, 39):
             sheet1.cell(row=gwteamheaderow, column=gwtitle).value = str('GW {}'.format(gw))
             sheet1.cell(row=gwteamheaderow, column=gwtitle + 1).value = str('P {}'.format(gw))
             gwtitle = gwtitle + 2
         capfill = PatternFill(start_color='ff15dd43', end_color='ff15dd43', fill_type='solid')
         vcapfill = PatternFill(start_color='ff00FFDA', end_color='ff00FFDA', fill_type='solid')
         benchfill = PatternFill(start_color='ffBA6B12', end_color='ffBA6B12', fill_type='solid')
-        for rownum in range(62, 66): # 62 to 66
-            for colnum in range(3, 97): # 79+18 to 97
+        for rownum in range(53, 57): # 62 to 66
+            for colnum in range(3, 79): # 79+18 to 97
                 bench = sheet1.cell(row=rownum, column=colnum)
                 bench.fill = benchfill
 
-        gwteamcol = ((39+9) * 2 - int(num_of_gw * 2)) - 1  # To accomodate people who started late. Don't ask how I came up with this formula.
+        gwteamcol = ((39) * 2 - int(num_of_gw * 2)) - 1  # To accomodate people who started late. Don't ask how I came up with this formula.
 
         capfont = Font(underline='single')
         # gwteamcol = 1
@@ -238,7 +236,7 @@ class fantasypl():
             url3 = 'https://fantasy.premierleague.com/api/entry/{}/event/{}/picks/'.format(self.fpl_prompt.get(), g_w)
             json_pick = requests.get(url3).json()
             gwteamcol = gwteamcol + 2
-            gwteamrow = 42+9
+            gwteamrow = 42
             url4 = 'https://fantasy.premierleague.com/api/event/{}/live/'.format(g_w)
             json_points = requests.get(url4).json()
             total_players = len(json_points['elements'])
@@ -276,7 +274,6 @@ class fantasypl():
                     vcapf = sheet1.cell(row=gwteamrow, column=gwteamcol)
                     vcapf.fill = vcapfill
                 gwteamrow = gwteamrow + 1
-
 
         ## Import classic league history
         sheet1.merge_cells('BR1:BS1')  # League Rank header
@@ -330,9 +327,8 @@ class fantasypl():
         h2hrow = 2
         for h2hcol in range(2):
             sheet1.cell(row=h2hrow, column=h2hcol + 66).value = str(h2h_header[h2hcol])
-
         if num_of_h2h > 0:
-            for each in json_history['leagues']['h2h']:
+            for each in json_info['leagues']['h2h']:
                 h2hname = each['name']
                 h2hrank = each['entry_rank']
                 h2h_data = [h2hname, h2hrank]
@@ -340,20 +336,20 @@ class fantasypl():
                 for colnum in range(2):
                     sheet1.cell(row=h2hrow, column=colnum + 66).value = h2h_data[colnum]
         else:
-            sheet1.cell(row=3, column=66).value = "No H2H leagues entered." \
- \
+            sheet1.cell(row=3, column=66).value = "No H2H leagues entered."
+
         ## Import Gameweek Transfer history
-        sheet1.merge_cells('CV1:CZ1')
-        sheet1['CV1'].value = 'Transfer History'
+        sheet1.merge_cells('CD1:CH1')
+        sheet1['CD1'].value = 'Transfer History'
 
         transferheader = ['GW', 'Transfer In', 'Value In ', 'Transfer Out', 'Value Out']
         transferhrow = 2
         for tkey in range(5):
-            sheet1.cell(row=transferhrow, column=tkey + 100).value = str(transferheader[tkey]) #82+18
+            sheet1.cell(row=transferhrow, column=tkey + 82).value = str(transferheader[tkey]) #82+18
         url5 = 'https://fantasy.premierleague.com/api/entry/{}/transfers/'.format(self.fpl_prompt.get())
         json_transfer = requests.get(url5).json()
         gwtransferrow = 2
-        gwtransfercol = 82+18
+        gwtransfercol = 82
         num_of_t = len(json_transfer)
 
         if num_of_t == 0:
@@ -394,19 +390,18 @@ class fantasypl():
                 sheet1.cell(row=dtrow, column=colnum + 61).value = dt_data[colnum]
 
         ## Import Weekly Dream Team Data
-        dtteamheaderrow = 59+9
+        dtteamheaderrow = 59
         dttitle = 3
-        for dt in range(1, 39+9):
+        for dt in range(1, 39):
             sheet1.cell(row=dtteamheaderrow, column=dttitle).value = str('GW {}'.format(dt))
             sheet1.cell(row=dtteamheaderrow, column=dttitle + 1).value = str('P {}'.format(dt))
             dttitle = dttitle + 2
 
         dtteamcol = 1
-        for each in range(1, 39+9):  ## CHANGE THIS BACK TO 39 TO ACOMMODATE ALL GAMEWEEKS
+        for each in range(1, 39): 
             url7 = 'https://fantasy.premierleague.com/api/dream-team/{}/'.format(each)
             json_weeklydt = requests.get(url7).json()
-            # print(json_weeklydt)
-            dtteamrow = 69 #60+9
+            dtteamrow = 60
             dtteamcol = dtteamcol + 2
             for each1 in json_weeklydt['team']:
                 dtpl_id = each1['element']
@@ -468,22 +463,22 @@ class fantasypl():
             row1.font = headerfont
             row1.alignment = alignment
 
-        for key in range(3, 97):  # GW Teams 'GW1/P1/GW2/P2.....' 79+18, 41+9
-            row41 = sheet1.cell(row=50, column=key)
+        for key in range(3, 79):  # GW Teams 'GW1/P1/GW2/P2.....'
+            row41 = sheet1.cell(row=41, column=key)
             row41.font = headerfont
             row41.alignment = alignment
 
-        for key1 in range(2, 49):  # GW history full table 40+9
+        for key1 in range(2, 40):  # GW history full table
             for key2 in range(3, 10):
                 set1 = sheet1.cell(row=key1, column=key2)
                 set1.alignment = alignment
 
-        for key1 in range(51, 66):  # Team history full table 42+9, 57+9, 79+18
-            for key2 in range(3, 97):
+        for key1 in range(42, 57):  # Team history full table
+            for key2 in range(3, 79):
                 set2 = sheet1.cell(row=key1, column=key2)
                 set2.alignment = alignment
 
-        for key in range(2, 49):  # GW history table value format 40+9
+        for key in range(2, 40):  # GW history table value format
             col1 = sheet1.cell(row=key, column=11)  # Percentile GW Rank
             col1.number_format = '0.00000'
             col1.alignment = alignment
@@ -504,8 +499,8 @@ class fantasypl():
             col4 = sheet1.cell(row=key, column=15)  # Position
             col4.alignment = alignment
 
-        for key1 in range(1, 3 + num_of_t):  # Transfer history table 82+18, 88+18
-            for key2 in range(100, 106):
+        for key1 in range(1, 3 + num_of_t):  # Transfer history table
+            for key2 in range(82, 88):
                 set3 = sheet1.cell(row=key1, column=key2)
                 set3.alignment = alignment
         for key in range(100, 106):
@@ -513,16 +508,16 @@ class fantasypl():
             set4.alignment = alignment
             set4.font = headerfont
 
-        for key in range(100, 106):  # Transfer history 'GW/Transfer in/Value....'
+        for key in range(82, 88):  # Transfer history 'GW/Transfer in/Value....'
             row1 = sheet1.cell(row=1, column=key)
             row1.font = headerfont
 
-        for key1 in range(2, num_of_t + 1):  # Transfer table value In 84+18
-            col7 = sheet1.cell(row=key1, column=102)
+        for key1 in range(2, num_of_t + 1):  # Transfer table value In
+            col7 = sheet1.cell(row=key1, column=84)
             col7.number_format = '0.0'
 
-        for key1 in range(2, num_of_t + 1):  # Transfer table value Out 86+18
-            col7 = sheet1.cell(row=key1, column=104)
+        for key1 in range(2, num_of_t + 1):  # Transfer table value Out
+            col7 = sheet1.cell(row=key1, column=86)
             col7.number_format = '0.0'
 
         for col8 in range(70, 73):  # League Rank table
@@ -536,10 +531,10 @@ class fantasypl():
         lr1.font = headerfont
         lr1.alignment = alignment
 
-        for col9 in range(3, 97):  # Gameweek Dream Team full table and title 79+18, 59+9
-            gwdt = sheet1.cell(row=68, column=col9)
+        for col9 in range(3, 79):  # Gameweek Dream Team full table and title
+            gwdt = sheet1.cell(row=59, column=col9)
             gwdt.font = headerfont
-            for row9 in range(68, 80): # 59+9, 71+9
+            for row9 in range(59, 71):
                 gwdtt = sheet1.cell(row=row9, column=col9)
                 gwdtt.alignment = alignment
 
@@ -574,15 +569,15 @@ class fantasypl():
         iconset = IconSet(iconSet='3Arrows', cfvo=[first, second, third], showValue=None, percent=None,
                           reverse=None)
         rule = Rule(type='iconSet', iconSet=iconset)
-        sheet1.conditional_formatting.add('O2:O48', cfRule=rule) #39+9
+        sheet1.conditional_formatting.add('O2:O39', cfRule=rule)
 
         ## Creating Tables
-        table1 = Table(displayName='GWH', ref='C1:P48')  # GW History 39+9
+        table1 = Table(displayName='GWH', ref='C1:P39')  # GW History
         style1 = TableStyleInfo(name="TableStyleMedium11", showRowStripes=True)
         table1.tableStyleInfo = style1
         sheet1.add_table(table1)
 
-        table2 = Table(displayName='GWT', ref='C50:CR65')  # Team History 41+9, BZ to CR 56+ 9
+        table2 = Table(displayName='GWT', ref='C41:BZ56')  # Team History
         style2 = TableStyleInfo(name="TableStyleLight15", showRowStripes=True)
         table2.tableStyleInfo = style2
         sheet1.add_table(table2)
@@ -591,11 +586,10 @@ class fantasypl():
             num_of_trow = num_of_t
         else:
             num_of_trow = 1
-        table3 = Table(displayName='TH', ref='CV2:CZ{}'.format(num_of_trow + 2))  # Transfer History
+        table3 = Table(displayName='TH', ref='CD2:CH{}'.format(num_of_trow + 2))  # Transfer History
         style3 = TableStyleInfo(name="TableStyleMedium12", showRowStripes=True)
         table3.tableStyleInfo = style3
         sheet1.add_table(table3)
-
         if num_of_cups > 0:
             cup_table_row = 2
         else:
@@ -626,7 +620,7 @@ class fantasypl():
         table7.tableStyleInfo = style7
         sheet1.add_table(table7)
 
-        table8 = Table(displayName='GWDT', ref='C68:CR79')  # GW Dream Team 59+9, 70+9
+        table8 = Table(displayName='GWDT', ref='C59:BZ70')  # GW Dream Team
         style8 = TableStyleInfo(name="TableStyleLight17", showRowStripes=True)
         table8.tableStyleInfo = style8
         sheet1.add_table(table8)
@@ -634,17 +628,17 @@ class fantasypl():
         ## Creating Chart
         chart1 = LineChart()
         chart1.title = 'Gameweek Points / Average Points / Points Benched / Highest GW Score'
-        data1 = Reference(sheet1, min_col=4, max_col=7, min_row=1, max_row=48) # 39+9
+        data1 = Reference(sheet1, min_col=4, max_col=7, min_row=1, max_row=39)
         chart1.height = 20
         chart1.width = 60
         chart1.add_data(data1, titles_from_data=True)
         sheet1.add_chart(chart1, "T2")
 
         ## Save workbook
-        wb.save("FPL.Data.19-20.{}.xlsx".format(self.fpl_prompt.get()))
+        wb.save("FPL.Data.20-21.{}.xlsx".format(self.fpl_prompt.get()))
 
         ## Clear text box and show success dialog
-        item_path = str(path.realpath("FPL.Data.19-20.{}.xlxs".format(self.fpl_prompt.get())))
+        item_path = str(path.realpath("FPL.Data.20-21.{}.xlxs".format(self.fpl_prompt.get())))
         messagebox.showinfo(title="Success", message="Data for \'{}\' imported successfully.\n"
                                                      "File saved in {}".format(team_name, item_path))
         self.clear()
@@ -653,13 +647,11 @@ class fantasypl():
     def clear(self):
         self.fpl_prompt.delete(0, 'end')
 
-
 ## Call GUI
 def main():
     root = Tk()
     fantasypl(root)
     root.mainloop()
-
 
 if __name__ == "__main__":
     main()
