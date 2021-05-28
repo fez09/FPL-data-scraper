@@ -7,7 +7,7 @@ Youtube tutorial: https://youtu.be/DM9-e84iDZ8
 
 Screenshots: https://imgur.com/a/lp27xAn
 
-## **Data updated to include additional gameweeks** . 
+## **Data updated for 2020/2021 Season**
 
 ## Requirements
 Whatever is required by the openpyxl and tkinter modules, ie,
