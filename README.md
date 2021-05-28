@@ -9,15 +9,9 @@ Screenshots: https://imgur.com/a/lp27xAn
 
 ## **Data updated to include additional gameweeks** . 
 
-## ~~Due to covid-19, an additional 9 gameweeks were added to the FPL database, which resulted in the excel sheet formatting being out of order. I am in the process of updating the code and it will be ready soon~~ . 
-
-Stay Safe.
-
 ## Requirements
 Whatever is required by the openpyxl and tkinter modules, ie,
- - Windows device
- - Microsoft Excel 2010 or newer
-
+ - Windows device to run the executable
  
 ## Modules Used 
  - tkinter - for GUI
@@ -35,8 +29,8 @@ Whatever is required by the openpyxl and tkinter modules, ie,
  - Gameweek Rank
  - Overall Points
  - Overall Rank
- - Percentile Overall Rank (v2.0)
- - Percentile Gameweek Rank (v2.0)
+ - Percentile Overall Rank (v2.0+)
+ - Percentile Gameweek Rank (v2.0+)
  - Position in overall leaderboard
  - Team Value
  - Weekly Squad
